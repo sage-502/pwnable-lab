@@ -8,7 +8,7 @@ echo "[*] pwnable-lab setup start"
 # ---------------------------
 echo "[*] 기본 패키지 설치 시작"
 apt update
-apt install -y \:
+apt install -y \
     gcc gdb make \
     python3 python3-pip \
     git vim \
