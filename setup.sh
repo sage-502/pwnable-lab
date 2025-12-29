@@ -43,9 +43,8 @@ echo "[*] baby 유저 생성 시작"
 if id "baby" &>/dev/null; then
     echo "[+] user 'baby' already exists"
 else
-    useradd -m -s /bin/bash baby
-    passwd -d baby            # 비밀번호 제거
-    chage -d 0 baby           # 패스워드 로그인 비활성
+    echo "[*] baby 계정 생성..."
+    sudo adduser --disabled-password --gecos "" baby
 fi
 echo "[+] baby 유저 생성 완료"
 
