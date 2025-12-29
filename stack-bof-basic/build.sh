@@ -39,6 +39,6 @@ echo "[+] build complete"
 # 4. 권한 설정
 # ---------------------------
 chown root:root "$TMP_DIR/$BIN"
-chmod 4755 "$TMP_DIR/$BIN"
+chmod 2755 "$TMP_DIR/$BIN"
 
 echo "[+] binary: $TMP_DIR/$BIN"
