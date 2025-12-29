@@ -51,12 +51,4 @@ echo "[+] baby 유저 생성 완료"
 # sudo 그룹에서 제거 (혹시 모를 상황 대비)
 deluser baby sudo &>/dev/null || true
 
-# ---------------------------
-# 5. core dump 활성화 (디버깅 편의)
-# ---------------------------
-echo "[*] core dump 활성화"
-ulimit -c unlimited
-echo '/tmp/core.%e.%p' > /proc/sys/kernel/core_pattern
-echo "[+] core dump 활성화 완료"
-
 echo "[+] setup complete"
