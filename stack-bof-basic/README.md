@@ -19,7 +19,7 @@ Stack Buffer Overflow는 스택에 할당된 버퍼(예: `char buf[20]`)에 **�
 +------------------+
 | Return Address   |  <- 덮을 목표
 +------------------+
-| Saved RBP        |
+| Saved EBP(RBP)   |
 +------------------+
 | buf[20]          |  <- overflow 시작
 +------------------+
@@ -31,7 +31,7 @@ Stack Buffer Overflow는 스택에 할당된 버퍼(예: `char buf[20]`)에 **�
 ## 취약 코드 포인트
 ```c
 void vuln(int value){
-    char buf[20];
+    char buf[16];
     printf("input: ");
     gets(buf);                 // 길이 제한 없음 -> overflow 가능
     printf("value: %d\n", value);
