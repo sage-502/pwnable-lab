@@ -38,3 +38,57 @@ void vuln(int value){
     printf("buf: %s\n", buf);
 }
 ```
+vuln()함수에서 gets()를 사용하고 있으므로 길이 제한 없이 입력 가능하다.
+
+---
+
+## 바이너리 분석
+
+### condition
+
+![파일 확인](/images/stack-bof-basic/00.png)
+
+vuln에는 setgid가 설정되어 있다.
+vuln은 32bit 로 컴파일되었으며, 리틀엔디안이 적용되어 있다.
+또한 보호 기법을 전부 꺼두었기에 canary도 없고, pie도 꺼져있다.
+
+### main() 함수
+
+설명 생략.
+
+![main-asm](/images/stack-bof-basic/01.png)
+
+### vuln() 함수
+
+![vuln-asm](/images/stack-bof-basic/02.png)
+
+gets() 함수를 호출하기 전에 인자로 push되는 게 buf.
+
+### 리턴 주소 직전까지 입력
+
+vuln()함수 에필로그 직전에 bp를 걸고, 리턴 주소 직전까지 A를 넣어봤다.
+사진과 같이 메모리에 들어간다.
+
+![test](/images/stack-bof-basic/04.png)
+
+### exploit
+오프셋 만큼 쓰레기를 넣고, return addr을 win()함수의 주소로 입력한다.
+그러면 다음과 같은 형태가 된다.
+
+```
+높은 주소
++------------------+
+| Return Address   |  <- win()함수 주소
++------------------+
+| Saved EBP(RBP)   |  <- AAAA
++------------------+
+| buf[20]          |  <- AAAA...AA
++------------------+
+낮은 주소
+```
+
+ret를 실행 시 win()함수로 점프하게 되어, win()함수 내의 system("/bin/sh")를 실행할 수 있게 된다.
+
+![exploit](/images/stack-bof-basic/06.png)
+
+id에서 group이 root임을 확인 할 수 있다.
