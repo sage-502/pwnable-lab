@@ -22,6 +22,7 @@ pwnable-lab/
 │    ├── exploit.py     // 익스플로잇 파이썬 코드
 │    └── fix.c          // 취약점 제거한 C소스코드
 ...
+├── memo.md             // 메모장, 기록
 └── images/             // .md 파일에 사용할 이미지 모음
 ```
 
