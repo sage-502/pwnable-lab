@@ -12,7 +12,8 @@ int main() {
     printf("\ntarget = 0x%x\n", target);
 
     if(target == 0xdeadbeef){
-	printf("good!\n");
+		printf("good!\n");
+		setregid(getegid(), getegid());
         system("/bin/bash");
     }	    
 
