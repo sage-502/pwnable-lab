@@ -48,6 +48,8 @@ pwnable-lab/
 - 사용 : `sudo bash build.sh`
 - 이후 해당 디렉터리로 이동, 필요 시 계정 변경 후 실습
 
+---
+
 ## 실습 순서 (권장)
 1. `vuln.c`에서 취약점 확인
 2. `build.sh` 로 컴파일
