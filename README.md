@@ -26,6 +26,11 @@ pwnable-lab/
 └── images/             // .md 파일에 사용할 이미지 모음
 ```
 
+### 개별 디렉터리 소개
+- stack-bof-basic : ret2win - ASLR off, canary off
+- fotmat-string-vuln : local overwrite - ASLR off
+- format-string-vuln2 : ret2win - ASLR off
+
 ---
 
 ## 사용법
@@ -42,3 +47,9 @@ pwnable-lab/
 - 실습용 디렉터리에 vuln.c 복사, vuln.c 컴파일, 권한 설정
 - 사용 : `sudo bash build.sh`
 - 이후 해당 디렉터리로 이동, 필요 시 계정 변경 후 실습
+
+### 실습 순서 (권장)
+1. `vuln.c`에서 취약점 확인
+2. `build.sh` 로 컴파일
+3. 분석, `exploit.py` 또는 `payload.py` → 익스플로잇
+4. 취약점 제거한 `fix.c` 확인
