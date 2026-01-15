@@ -29,6 +29,14 @@ int main() {
 }
 ```
 
+### Environment
+
+- Architecture: x86 (32-bit)
+- PIE: disabled
+- Stack Canary: disabled
+- NX: enabled
+- ASLR: disabled (for practice)
+
 ---
 
 ## 3. 왜 ret2win이 가능한가?
@@ -40,11 +48,11 @@ int main() {
 [ ... ]         ← printf가 가변 인자라고 착각하고 읽는 영역
 [ fmt(&buf) ]   ← printf의 첫 번째 인자
 [ saved RET ]   ← printf가 return할 주소
-높은 주소
+낮낮은 주소
 ```
 
-- printf의 saved RET가 저장된 곳에 win()함수의 주소를 저장한다.
-- 그러면 printf함수 종료 후 win함수로 넘어가게 된다.
+- Format String을 이용해 printf의 saved RET가 저장된 메모리 위치에 win() 함수의 주소를 기록한다.
+- 그러면 printf 함수가 return하는 순간 control flow가 win()으로 이동한다.
 
 > **노트: Stack Canary와의 관계**
 >
@@ -129,6 +137,8 @@ x/2wx $esp
 [ $esp + 4 ] → fmt(&buf)
 ```
 
+![saved ret slot](https://github.com/sage-502/pwnable-lab/blob/main/images/format-string-vuln2/00.png)
+
 ---
 
 ## 6. Write : `%hn`을 이용한 ret overwrite
@@ -190,10 +200,7 @@ sys.stdout.buffer.write(payload)
 
 `printf`가 리턴하는 순간 control flow가 `win()`으로 이동하며:
 
-```
-good!
-$
-```
+![result](https://github.com/sage-502/pwnable-lab/blob/main/images/format-string-vuln2/01.png)
 
 > **노트**
 >
