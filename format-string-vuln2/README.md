@@ -48,7 +48,7 @@ int main() {
 [ ... ]         ← printf가 가변 인자라고 착각하고 읽는 영역
 [ fmt(&buf) ]   ← printf의 첫 번째 인자
 [ saved RET ]   ← printf가 return할 주소
-낮낮은 주소
+낮은 주소
 ```
 
 - Format String을 이용해 printf의 saved RET가 저장된 메모리 위치에 win() 함수의 주소를 기록한다.
