@@ -27,10 +27,10 @@ pwnable-lab/
 ```
 
 ### 개별 디렉터리 소개
-1. stack-bof-basic : ret2win - ASLR off, canary off
-2. format-string-vuln : local overwrite - ASLR off
-3. format-string-vuln2 : ret2win - ASLR off
-4. fsb-leak : libc leak - ASLR on
+1. [stack-bof-basic](https://github.com/sage-502/pwnable-lab/tree/main/stack-bof-basic) : ret2win - ASLR off, canary off
+2. [format-string-vuln](https://github.com/sage-502/pwnable-lab/tree/main/format-string-vuln) : local overwrite - ASLR off
+3. [format-string-vuln2](https://github.com/sage-502/pwnable-lab/tree/main/format-string-vuln2) : ret2win - ASLR off
+4. [fsb-leak](https://github.com/sage-502/pwnable-lab/tree/main/fsb-leak) : libc leak - ASLR on
 
 (업데이트 예정)
 
