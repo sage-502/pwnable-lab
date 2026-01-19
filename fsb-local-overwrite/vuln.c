@@ -7,7 +7,11 @@ int main() {
     int target = 0xcafebabe;
     char buf[100];
 
-    puts("input:");
+    puts("input1:");
+    fgets(buf, sizeof(buf), stdin);
+    printf(buf);
+
+    puts("input2:");
     fgets(buf, sizeof(buf), stdin);
     printf(buf);
 
