@@ -27,9 +27,12 @@ pwnable-lab/
 ```
 
 ### 개별 디렉터리 소개
-- stack-bof-basic : ret2win - ASLR off, canary off
-- format-string-vuln : local overwrite - ASLR off
-- format-string-vuln2 : ret2win - ASLR off
+1. stack-bof-basic : ret2win - ASLR off, canary off
+2. format-string-vuln : local overwrite - ASLR off
+3. format-string-vuln2 : ret2win - ASLR off
+4. fsb-leak : libc leak - ASLR on
+
+(업데이트 예정)
 
 ---
 
