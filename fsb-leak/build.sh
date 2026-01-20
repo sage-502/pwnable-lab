@@ -27,7 +27,6 @@ echo "[+] source copied"
 echo "[*] compiling binary"
 
 gcc -m32 "$TMP_DIR/$SRC" -o "$TMP_DIR/$BIN" \
-    -m32 \
     -g \
     -fno-stack-protector \
     -no-pie \
@@ -44,6 +43,6 @@ chmod 2755 "$TMP_DIR/$BIN"
 echo "[+] binary: $TMP_DIR/$BIN"
 
 echo ""
-echo "[!] ASLR is NOT disabled automatically."
 echo "[!] Run this manually if needed:"
-echo "    echo 0 | sudo tee /proc/sys/kernel/randomize_va_space"
+echo "    ASLR off : echo 0 | sudo tee /proc/sys/kernel/randomize_va_space"
+echo "    ASLR on  : echo 2 | sudo tee /proc/sys/kernel/randomize_va_space"
