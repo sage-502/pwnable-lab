@@ -62,7 +62,21 @@ libc의 `printf`는 단일 함수가 아니라, 내부에서 다음과 같은 �
 그때마다 **libc 내부 주소를 가리키는 return address** 
 또는 **libc 전역 구조체 포인터**가 스택에 push된다.
 
-
+> **노트 : PLT와 GOT**
+> 
+> 프로그램에서 `printf(buf)`가 호출될 때, 실제로는 다음과 같은 흐름을 따른다.
+> ```
+> main
+> └─ call printf@plt
+>       └─ GOT[printf] 참조
+>             └─ libc 내부 printf 코드로 jump
+> ```
+> - printf@plt는 바이너리 내부에 존재하는 중계용 코드이며
+> - 실제 libc 함수 주소는 GOT(Global Offset Table) 에 저장된다.
+>
+> ASLR이 활성화된 환경에서는:
+> - libc는 실행 시마다 다른 주소에 로드되며
+> - GOT에는 그 실행 시점의 libc 함수 주소가 기록된다.
 
 ### 2.2 cdecl 호출 규약과 스택에 값이 남는 이유
 
