@@ -200,9 +200,30 @@ ret
 
   순서로 체인 배치
 
----
 
-## 8. ret2libc 성공 확인
+### 기대했던 형태와 다른 프롤로그 직후 상태
+
+아래는 `main` 함수의 프롤로그가 끝난 직후의 상태이다.
+
+![prologue](https://github.com/sage-502/pwnable-lab/blob/main/images/bof-ret2libc-epilogue/01.png)
+
+일반적인 `push ebp; mov ebp, esp` 형태와 달리,
+이 바이너리는 스택 정렬과 레지스터 보존을 위해
+`ecx`, `ebx`, `esi`를 스택에 저장하고 있다.
+
+이 시점에서 이미 단순한 saved RET overwrite가 성립하지 않을 가능성이 있음을 알 수 있다.
+(그러나 나는 늦게 깨달음)
+
+### epilogue 이후 ret 직전 스택 상태
+
+아래는 `main`의 epilogue를 모두 통과한 뒤,
+`ret` 직전에 중단한 상태이다.
+
+`lea esp, [ecx-0x4]`에 의해
+실제로 `ret`이 참조하는 위치에
+ret2libc 체인이 배치되어 있음을 확인할 수 있다.
+
+![epilogue](https://github.com/sage-502/pwnable-lab/blob/main/images/bof-ret2libc-epilogue/02.png)
 
 `ret` 직전 스택 상태:
 
@@ -222,6 +243,8 @@ ESP →
 `/bin/sh`가 non-interactive 환경에서는 바로 종료되지만,
 이는 exploit 실패가 아니라 **입출력 환경 문제**이다.
 
+※ gdb 환경에서 캡처한 스택/레지스터 값이며, 실제 실행 환경에서는 주소 값이 달라질 수 있다.
+
 ---
 
 ## 9. 여담
@@ -238,4 +261,5 @@ ESP →
 
   * `vuln()` 함수 분리
   * `-fno-omit-frame-pointer`
-     와 같이 교과서적인 스택 구조가 더 적합할 것 같다.
+  
+  와 같이 교과서적인 스택 구조가 더 적합할 것 같다.
