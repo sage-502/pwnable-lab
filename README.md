@@ -32,6 +32,7 @@ pwnable-lab/
 3. [format-string-vuln2](https://github.com/sage-502/pwnable-lab/tree/main/format-string-vuln2) : ret2win - ASLR off
 4. [fsb-leak](https://github.com/sage-502/pwnable-lab/tree/main/fsb-leak) : libc leak - ASLR on
 5. [bof-ret2libc-epilogue](https://github.com/sage-502/pwnable-lab/tree/main/bof-ret2libc-epilogue) : ret2libc - ASLR off (분석 연습용)
+6. [bof-ret2libc-basic](https://github.com/sage-502/pwnable-lab/tree/main/bof-ret2libc-basic) : ret2libc - ASLR off (vuln함수 사용)
 
 (업데이트 예정)
 
