@@ -12,9 +12,15 @@
   - GDB 내부에서 system("/bin/bash")로 쉘 쓰는 게 어려웠음.
 - [x] fsb leak - stack leak, libc leak : ASLR off, on 각각
   - off 하는 거 까먹음.
+- [x] bof ret2libc - epilogue : ASLR off
+  - 프롤로그/에필로그가 이상하게 나옴.
+  - 케이스 스터디 느낌으로 그냥 해봄.
+- [ ] bof ret2libc - clean : ASLR off
+  - `-fno-omit-frame-pointer` 옵션 추가로 예쁘게
+  - `vuln()` 함수 따로 파서 ret overwrite 깔끔하게
+- [ ] fsb bof ret2libc : ASLR on
+  - fsb로 libc leak, bof로 ret overwrite
 - [ ] fsb local overwrite - local overwrite : ASLR on
-- [ ] bof ret2libc
-- [ ] fsb ret2libc
 - [ ] fsb got overwrite
 - [ ] bof fs canary leak
 - [ ] ROP...
@@ -24,7 +30,7 @@
 ### vulnerability
 
 - Buffer overflow : bof
-- Format string vulnerability : fs
+- Format string vulnerability : fsb
 
 ---
 
@@ -35,3 +41,13 @@
 - got overwrite
 - leak
 - return oriented programming
+
+---
+
+## 실습 순서
+
+1. [stack-bof-basic](https://github.com/sage-502/pwnable-lab/tree/main/stack-bof-basic)
+2. [format-string-vuln](https://github.com/sage-502/pwnable-lab/tree/main/format-string-vuln)
+3. [format-string-vuln2](https://github.com/sage-502/pwnable-lab/tree/main/format-string-vuln2)
+4. [fsb-leak](https://github.com/sage-502/pwnable-lab/tree/main/fsb-leak)
+5. [bof-ret2libc-epilogue](https://github.com/sage-502/pwnable-lab/tree/main/bof-ret2libc-epilogue)
