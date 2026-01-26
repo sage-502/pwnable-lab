@@ -1,3 +1,8 @@
+# NOTE:
+# 이 payload는 ASLR OFF + gdb 기준으로 1회성 재현을 목적으로 하며,
+# 주소 및 레지스터 값은 하드코딩되어 있다.
+
+
 #!/usr/bin/env python3
 import sys
 from struct import pack
