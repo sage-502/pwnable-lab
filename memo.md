@@ -11,6 +11,7 @@
 3. [format-string-vuln2](https://github.com/sage-502/pwnable-lab/tree/main/format-string-vuln2)
 4. [fsb-leak](https://github.com/sage-502/pwnable-lab/tree/main/fsb-leak)
 5. [bof-ret2libc-epilogue](https://github.com/sage-502/pwnable-lab/tree/main/bof-ret2libc-epilogue)
+6. [bof-ret2libc-basic](https://github.com/sage-502/pwnable-lab/tree/main/bof-ret2libc-basic)
 
 ---
 
@@ -25,7 +26,7 @@
 - [x] bof ret2libc - epilogue : ASLR off
   - 프롤로그/에필로그가 이상하게 나옴.
   - 케이스 스터디 느낌으로 그냥 해봄.
-- [ ] bof ret2libc - clean : ASLR off
+- [x] bof ret2libc - clean : ASLR off
   - `-fno-omit-frame-pointer` 옵션 추가로 예쁘게
   - `vuln()` 함수 따로 파서 ret overwrite 깔끔하게
 - [ ] fsb bof ret2libc : ASLR on
