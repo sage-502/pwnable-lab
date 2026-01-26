@@ -4,7 +4,17 @@
 
 ---
 
-## want to do
+## Procedure
+
+1. [stack-bof-basic](https://github.com/sage-502/pwnable-lab/tree/main/stack-bof-basic)
+2. [format-string-vuln](https://github.com/sage-502/pwnable-lab/tree/main/format-string-vuln)
+3. [format-string-vuln2](https://github.com/sage-502/pwnable-lab/tree/main/format-string-vuln2)
+4. [fsb-leak](https://github.com/sage-502/pwnable-lab/tree/main/fsb-leak)
+5. [bof-ret2libc-epilogue](https://github.com/sage-502/pwnable-lab/tree/main/bof-ret2libc-epilogue)
+
+---
+
+## Want to do
 
 - [x] stack bof basic - ret2win : ASLR off
 - [x] format string vuln1 - local overwrite : ASLR off, 로컬 변수 주소 제시 (개념용)
@@ -27,27 +37,17 @@
 
 ---
 
-### vulnerability
+### Vulnerability
 
 - Buffer overflow : bof
 - Format string vulnerability : fsb
 
 ---
 
-### method
+### Method
 
 - local overwrite
 - ret overwrite : ret2win, ret2libc
 - got overwrite
 - leak
 - return oriented programming
-
----
-
-## 실습 순서
-
-1. [stack-bof-basic](https://github.com/sage-502/pwnable-lab/tree/main/stack-bof-basic)
-2. [format-string-vuln](https://github.com/sage-502/pwnable-lab/tree/main/format-string-vuln)
-3. [format-string-vuln2](https://github.com/sage-502/pwnable-lab/tree/main/format-string-vuln2)
-4. [fsb-leak](https://github.com/sage-502/pwnable-lab/tree/main/fsb-leak)
-5. [bof-ret2libc-epilogue](https://github.com/sage-502/pwnable-lab/tree/main/bof-ret2libc-epilogue)
