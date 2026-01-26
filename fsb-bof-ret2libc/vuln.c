@@ -3,8 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int main() {
-    setregid(getegid(), getegid());
+void vuln(){
     char buf[20];
 
     puts("input1:");
@@ -14,7 +13,12 @@ int main() {
     puts("input2:");
     gets(buf);
     printf("%s\n", buf);
+}
 
+int main() {
+    setregid(getegid(), getegid());
+    vuln();
+    puts("done");
     //exit(0);
     return 0;
 }
