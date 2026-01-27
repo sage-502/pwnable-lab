@@ -13,6 +13,7 @@
 5. [bof-ret2libc-epilogue](https://github.com/sage-502/pwnable-lab/tree/main/bof-ret2libc-epilogue)
 6. [bof-ret2libc-basic](https://github.com/sage-502/pwnable-lab/tree/main/bof-ret2libc-basic)
 7. [fsb-bof-ret2libc](https://github.com/sage-502/pwnable-lab/tree/main/fsb-bof-ret2libc)
+8. [fsb-local-overwrite](https://github.com/sage-502/pwnable-lab/tree/main/fsb-local-overwrite)
 
 ---
 
@@ -32,7 +33,7 @@
   - `vuln()` 함수 따로 파서 ret overwrite 깔끔하게
 - [x] fsb bof ret2libc : ASLR on
   - fsb로 libc leak, bof로 ret overwrite
-- [ ] fsb local overwrite - local overwrite : ASLR on
+- [x] fsb local overwrite - local overwrite : ASLR on
   - input2번 : 1번째 leak, 2번째 overwrite
 - [ ] fsb got overwrite
 - [ ] bof fs canary leak
