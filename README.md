@@ -27,13 +27,16 @@ pwnable-lab/
 ```
 
 ### 개별 디렉터리 소개
-1. [stack-bof-basic](https://github.com/sage-502/pwnable-lab/tree/main/stack-bof-basic) : bof + ret2win - ASLR off, canary off
-2. [format-string-vuln](https://github.com/sage-502/pwnable-lab/tree/main/format-string-vuln) : fsb + local overwrite - ASLR off
-3. [format-string-vuln2](https://github.com/sage-502/pwnable-lab/tree/main/format-string-vuln2) : fsb + ret2win - ASLR off
-4. [fsb-leak](https://github.com/sage-502/pwnable-lab/tree/main/fsb-leak) : fsb + libc leak - ASLR on
-5. [bof-ret2libc-epilogue](https://github.com/sage-502/pwnable-lab/tree/main/bof-ret2libc-epilogue) : fsb + ret2libc - ASLR off (번외, 분석 연습용)
-6. [bof-ret2libc-basic](https://github.com/sage-502/pwnable-lab/tree/main/bof-ret2libc-basic) : bof + ret2libc - ASLR off
-7. [fsb-bof-ret2libc](https://github.com/sage-502/pwnable-lab/tree/main/fsb-bof-ret2libc) : fsb + bof + ret2libc - ASLR on
+
+| No | Directory | Vuln | Method | Environ |
+|-------|-------|-------|-------|-------|
+| 1 | [stack-bof-basic](https://github.com/sage-502/pwnable-lab/tree/main/stack-bof-basic) | bof | ret2win | ASLR / canary off |
+| 2 | [format-string-vuln](https://github.com/sage-502/pwnable-lab/tree/main/format-string-vuln) | fsb | local overwrite | ASLR off |
+| 3 | [format-string-vuln2](https://github.com/sage-502/pwnable-lab/tree/main/format-string-vuln2) | fsb | ret2win | ASLR off |
+| 4 | [fsb-leak](https://github.com/sage-502/pwnable-lab/tree/main/fsb-leak) | fsb | libc leak | ASLR on |
+| 5 | [bof-ret2libc-epilogue](https://github.com/sage-502/pwnable-lab/tree/main/bof-ret2libc-epilogue) - 번외 | fsb | ret2libc | ASLR off |
+| 6 | [bof-ret2libc-basic](https://github.com/sage-502/pwnable-lab/tree/main/bof-ret2libc-basic) | bof | ret2libc | ASLR off |
+| 7 | [fsb-bof-ret2libc](https://github.com/sage-502/pwnable-lab/tree/main/fsb-bof-ret2libc) | fsb + bof | ret2libc | ASLR on |
 
 (업데이트 예정)
 
