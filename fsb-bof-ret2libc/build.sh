@@ -47,5 +47,10 @@ chmod 2755 "$TMP_DIR/$BIN"
 echo "[+] binary: $TMP_DIR/$BIN"
 
 echo ""
+file $TMP_DIR/$BIN
+echo ""
+checksec --file=$TMP_DIR/$BIN
+
+echo ""
 echo "[!] Run this manually if needed:"
 echo "    echo 2 | sudo tee /proc/sys/kernel/randomize_va_space"
