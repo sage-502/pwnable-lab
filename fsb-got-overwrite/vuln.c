@@ -12,6 +12,6 @@ int main() {
     fgets(buf, sizeof(buf), stdin);
     printf(buf);
 
-    puts("bye");
+    puts("done");
     exit(0);
 }
