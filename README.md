@@ -38,6 +38,7 @@ pwnable-lab/
 | 6 | [bof-ret2libc-basic](https://github.com/sage-502/pwnable-lab/tree/main/bof-ret2libc-basic) | bof | ret2libc | ASLR off / canary off |
 | 7 | [fsb-bof-ret2libc](https://github.com/sage-502/pwnable-lab/tree/main/fsb-bof-ret2libc) | fsb + bof | ret2libc | ASLR on / canary off |
 | 8 | [fsb-local-overwrite](https://github.com/sage-502/pwnable-lab/tree/main/fsb-local-overwrite) | fsb | leak + local overwrite | ASLR on / PIE on |
+| 9 | [fsb-got-overwrite](https://github.com/sage-502/pwnable-lab/tree/main/fsb-got-overwrite) | fsb | got overwrite | PIE off / Partial RELRO |
 
 (업데이트 예정)
 
@@ -65,3 +66,5 @@ pwnable-lab/
 2. `build.sh` 로 컴파일
 3. 분석, `exploit.py` 또는 `payload.py` → 익스플로잇
 4. 취약점 제거한 `fix.c` 확인
+
+※ `exploit.py` 와 `payload.py`에서 주소나 오프셋 등은 직접 수정하여 사용해야 함.
