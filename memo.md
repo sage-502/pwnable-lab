@@ -14,6 +14,7 @@
 6. [bof-ret2libc-basic](https://github.com/sage-502/pwnable-lab/tree/main/bof-ret2libc-basic)
 7. [fsb-bof-ret2libc](https://github.com/sage-502/pwnable-lab/tree/main/fsb-bof-ret2libc)
 8. [fsb-local-overwrite](https://github.com/sage-502/pwnable-lab/tree/main/fsb-local-overwrite)
+9. [fsb-local-overwrite](https://github.com/sage-502/pwnable-lab/tree/main/fsb-got-overwrite)
 
 ---
 
@@ -35,7 +36,13 @@
   - fsb로 libc leak, bof로 ret overwrite
 - [x] fsb local overwrite - local overwrite : ASLR on
   - input2번 : 1번째 leak, 2번째 overwrite
-- [ ] fsb got overwrite
+- [x] fsb got overwrite : ASLR on, PIE off
+  - eixt의 got를 main으로 바꿔 무한 루프 돌리기
+  - 원래 쉘 따고 싶었는데, 인자 때문에 애매했음 (그래서 puts(buf) 계획)
+- [ ] fsb got overwrite2
+  - printf(buf) + puts(buf)
+  - got overwrite로 puts를 system으로 보내기
+  - 디렉 이름... fsb-1input-got-rce?
 - [ ] bof fs canary leak
 - [ ] ROP...
 
